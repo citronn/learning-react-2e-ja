@@ -1,117 +1,32 @@
-# Reactハンズオンラーニング 第2版
+## Reactのリソース
 
----
+オフィシャルなサイトへのリンクを以下にまとめます
 
-![表紙](learning-react-2e-ja.png)
+- [Reactのドキュメント](https://facebook.github.io/react/index.html)
+- [Reactのソースコード](https://github.com/facebook/react)
+- [Reactのブログ](https://facebook.github.io/react/blog/)
+- [ReactのNodeパッケージ](https://www.npmjs.com/package/react)
+- [webpackのドキュメント](https://webpack.js.org/)
+- [Jestのドキュメント](https://facebook.github.io/jest/)
+- [React Routerのドキュメント](https://reacttraining.com/react-router/)
 
----
 
-本リポジトリはオライリー・ジャパン発行書籍『[Reactハンズオンラーニング 第2版](https://www.oreilly.co.jp/books/9784873119380/)』のサポートサイトです。
+### 2.2.4.2 アロー関数とスコープ
+- レキシカルスコープ
+  - https://developer.mozilla.org/ja/docs/Web/JavaScript/Closures#lexical_scoping  
+- クロージャ
+  - > 組み合わされた（囲まれた）関数と、その周囲の状態（レキシカル環境）への参照の組み合わせ
+  - ```js
+      const counter = () => {
+         let count = 0;
 
-## サンプルコード
+         const increment = () => {
+            return (count += 1);
+         };
 
-### ファイル構成
+         return increment;
+      };
+      ```
+<br/>
 
-|フォルダ名 |説明                         |
-|:--        |:--                          |
-|chapter-01 |オフィシャルなサイトへのリンク集 |
-|chapter-02 |2章で使用するソースコード    |
-|...        |...                          |
-|chapter-12 |12章で使用するソースコード   |
-
-サンプルコードの解説は本書籍をご覧ください。
-
-## ライセンス
-
-## 正誤表
-
-下記の誤りがありました。お詫びして訂正いたします。
-
-本ページに掲載されていない誤植など間違いを見つけた方は、japan@oreilly.co.jpまでお知らせください。
-
-### 第2刷まで
-
-#### ■8章 P.176 下から6行目の「`if (data.login === login) return;`」の行が不要
-**誤**
-```
-  if (!data) return;
-  if (data.login === login) return;
-  const { name, avatar_url, location } = data;
-```
-**正**
-```
-  if (!data) return;
-  const { name, avatar_url, location } = data;
-```
-
-#### ■8章 P.177 10行目
-**誤**
-```
-また、データが未取得の場合や、すでに保存済みの場合は何もせずにreturnしています。
-```
-**正**
-```
-また、データが未取得の場合は何もせずにreturnしています。
-```
-
-#### ■8章 P.177 下から16行目の「`if (data.login === login) return;`」の行が不要
-**誤**
-```
-    if (!data) return;
-    if (data.login === login) return;
-    const { name, avatar_url, location } = data;
-```
-**正**
-```
-    if (!data) return;
-    const { name, avatar_url, location } = data;
-```
-
-#### ■8章 P.178 10行目
-**誤**
-```
-いずれの処理も、すでに処理済みのデータを再処理しないようにif文でreturnしています。
-```
-**正**
-```
-また、すでに取得したデータを再取得しないようにif文でreturnしています。
-```
-
-### 第1刷
-
-#### ■2章 P.27 20行目
-**誤**
-```
-API呼び出しnnn等
-```
-**正**
-```
-API呼び出し等
-```
-
-#### ■2章 P.27 25行目
-**誤**
-```
-以前はサーバーが公開するREST REST APIを呼び出すために、
-```
-**正**
-```
-以前はサーバーが公開するREST APIを呼び出すために、
-```
-
-#### ■3章 P.44 下から4行目の「`return frederick;`」の行が不要
-**誤**
-```
-function selfEducate() {
-  frederick.canRead = true;
-  frederick.canWrite = true;
-  return frederick;
-}
-```
-**正**
-```
-function selfEducate() {
-  frederick.canRead = true;
-  frederick.canWrite = true;
-}
-```
+- [JavaScript: 通常の関数とアロー関数の違いは「書き方だけ」ではない。異なる性質が10個ほどある。](https://qiita.com/suin/items/a44825d253d023e31e4d)
