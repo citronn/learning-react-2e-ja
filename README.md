@@ -30,3 +30,7 @@
 <br/>
 
 - [JavaScript: 通常の関数とアロー関数の違いは「書き方だけ」ではない。異なる性質が10個ほどある。](https://qiita.com/suin/items/a44825d253d023e31e4d)
+
+### 2.4.1 デストラクチャリング
+- 入れ子のデストラクチャリング
+  - https://ja.javascript.info/destructuring-assignment#ref-1918
