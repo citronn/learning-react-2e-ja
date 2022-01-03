@@ -100,3 +100,77 @@ Promise が成功するまで実行されない。
 ### 3.3.4 高階関数
 - カリー化
   - https://ja.javascript.info/currying-partials#ref-290
+
+
+### 5.1.2 BabelによるJSXの変換
+- JSXをサポートしているブラウザはないため、コンパイルが必要。
+- JSXをReactAPIにコンパイルする
+  - https://babeljs.io/repl
+
+### 5.3 webpackを使ってビルド環境を構築する
+- > JSX および ES.next の変換、コンポーネント間の依存関係の管理、画像や CSS の最適化
+  > HTML の\<script>タグに依存ファイルを記述する場合、それぞれのファイルは別々の HTTP リクエストによりダウンロードされるため、ファイル数が増えるとリクエスト数が増え、その分遅延が大きくなります。依存ファイルを単一のファイルにまとめることで、この遅延を削減できます。
+- Hot Module Replacement
+  - ソースコードの変更の監視と、リアルタイムに変更箇所を変更
+
+### 5.3.3 Source Map
+- 依存モジュールを単一ファイルにビルドすることで、元ファイルの行番号がわかららなくなるため、ブラウザで問題箇所が特定できても元ファイルのどこを修正してよいかわからなくなる
+  - https://webpack.js.org/configuration/devtool/
+  - デベロッパーツールの[Sources] > webpack://..フォルダにソースが格納されている
+
+### 6.3.1 refを使ったデータアクセス
+- > ref はコンポーネントの描画結果である DOM ノードへの参照を保持するオブジェクト
+- ```js
+  // 省略, jsx
+  return (
+      <form onSubmit={submit}>
+        <input ref={txtTitle} type="text" placeholder="color title..." required />
+        <input ref={hexColor} type="color" required />
+        <button>ADD</button>
+      </form>
+    );
+  }
+  // submit logic
+  const submit = e => {
+    e.preventDefault();
+    const title = txtTitle.current.value; // text inputのvalueを参照
+    const color = hexColor.current.value; // color inputのvalueを参照
+    onNewColor(title, color);
+    txtTitle.current.value = ""; // immutableでない => 宣言型プログラミングパターンに反する記述
+    hexColor.current.value = ""; // immutableでない <=> 制御されていないコンポーネント(uncontrolled component)
+  };
+  ```
+
+  - uncontrolled componentがどうしても必要になるケース
+    - > たとえば React 以外のライブラリとデータをやり取りする場合は、DOM に直接アクセスする必要があります。ただ、そのような場面以外では、なるべく次に紹介する<b>制御されたアプローチ</b>を取るようにしてください
+
+  - (RHFがrefを使ってvalueを参照するのは妥当か疑問)
+
+### 6.3.2 制御されたコンポーネント
+- > 制御されたコンポーネント(controlled component)では、ユーザーの入力値は React により管理されるため、DOM ノードに直接アクセスする必要はなく、ref も不要です。その結果、コードは宣言的になり、入力のバリデーションのコードを追加するのも容易になります
+  - ```js
+    const [title, setTitle] = useState(''); // useRefの代わりにuseStateを利用する
+    const [color, setColor] = useState('#000000')
+    ```
+
+### 6.3.3 カスタムフック
+- chapter-06/6.3/6.3.3/src/hooks.js
+
+### 6.4.2 コンテキストとステートの併用
+- > コンテキストプロバイダーを使えばデータを公開することが可能ですが、<b>データを変更することはできません</b>。それをするには、さらに親のコンポーネントの助けが必要になります。つまり、親コンポーネントでステートを保持して、その値を Provider コンポーネントに設定します。ステートが更新されると、親コンポーネントが再描画され、結果的に Provider の配下のコンポーネントツリーが新しいデータで再描画されます。
+  - ```js
+      export default function ColorProvider ({ children }) { // chapter-06/6.4/6.4.3/src/ColorProvider.js
+        const [colors, setColors] = useState(colorData);
+        return ( // setColors関数のデータも公開
+          <ColorContext.Provider value={{ colors, setColors }}>
+            {children}
+          </ColorContext.Provider>
+        );
+      }
+    ```
+    - setColorsを公開することで、任意の子コンポーネントがcolorを操作できるため賛否がある
+
+### 6.4.4 コンテキストとカスタムフックの併用
+- > コンテキストをコンシューマーにいっさい公開することなく、データを共有する
+  - https://github.com/citronn/learning-react-2e-ja/blob/ab0546cf5cc3e390bfdef196bd110837aa402ee5/chapter-06/6.4/6.4.4/src/ColorProvider.js#L6
+  - https://zenn.dev/takepepe/articles/context-custom-hooks
